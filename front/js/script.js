@@ -3,12 +3,19 @@ fetch("http://localhost:3000/api/products")
   .then((data) => addProducts(data))
   
   function addProducts(data) {
-    
     const imageUrl= data[0].imageUrl
-    const link = document.createElement("a")
-    link.href = "http://localhost:3000/images/kanap01.jpeg"
-    link.text = "Photo d'un canapé bleu, deux places"
-    const items = document.querySelector("#items")
-    items.appendChild(link)
+    const link = makeLink(imageUrl)
+    appendChildren(link)
   } 
   
+
+  function makeLink(imageUrl){
+    const link = document.createElement("a")
+    link.href = imageUrl
+    return link
+  }
+
+  function appendChildren(link) {
+    const items = document.querySelector("#items")
+    items.appendChild(link)
+  }
