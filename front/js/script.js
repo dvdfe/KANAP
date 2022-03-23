@@ -1,7 +1,6 @@
 fetch("http://localhost:3000/api/products")
   .then((res) => res.json())
   .then((data) => {
-    console.log(data)
     return addProducts(data) 
   })
 
@@ -23,7 +22,6 @@ function addProducts(data) {
     appendChildren(link, article)
   } 
   
-
 function makeLink(id){
     const link = document.createElement("a")
     link.href = "./product.html?id=" + id
@@ -35,6 +33,7 @@ function appendChildren(link, article) {
     items.appendChild(link)
     link.appendChild(article)
   }
+
 function makeImage(imageUrl, altTxt){
   const image = document.createElement("img")
   image.src = imageUrl
@@ -44,17 +43,8 @@ function makeImage(imageUrl, altTxt){
 
 function makeArticle(){
   const article = document.createElement("article")
-  const image = makeImage()
-//  const h3 = makeH3()
-//  const p = makeParagraph()
-//  article.appendChild(image)
-  //article.appendChild(h3)
-  //article.appendChild(p)
   return article
 }
-
-
-//function makeImage(){}
 
 function makeH3(name){
   const h3 = document.createElement("h3")
@@ -63,11 +53,9 @@ function makeH3(name){
   return h3
 }
 
-
 function makeParagraph(description){
   const p = document.createElement("p")
   p.textContent = description
   p.classList.add("productDescription")
   return p
-
 }
