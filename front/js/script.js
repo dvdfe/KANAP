@@ -5,21 +5,25 @@ fetch("http://localhost:3000/api/products")
   })
 
 function addProducts(data) {
-    const id= data[0]._id
+    const _id= data[0]._id
     const imageUrl = data[0].imageUrl
     const altTxt = data[0].altTxt
     const name = data[0].name
     const description = data[0].description
-    
-    const image = makeImage(imageUrl,altTxt)
-    const link = makeLink(id)
-    const article = makeArticle() 
-    const h3 = makeH3(name)
-    const p = makeParagraph(description)
-    article.appendChild(image)
-    article.appendChild(h3)
-    article.appendChild(p)
-    appendChildren(link, article)
+
+    data.forEach((canapé) => {
+      const { _id, imageUrl, altTxt, name, description} = canapé
+      
+      const image = makeImage(imageUrl,altTxt)
+      const link = makeLink(_id)
+      const article = makeArticle() 
+      const h3 = makeH3(name)
+      const p = makeParagraph(description)
+      article.appendChild(image)
+      article.appendChild(h3)
+      article.appendChild(p)
+      appendArticleToLink(link, article)
+    });
   } 
   
 function makeLink(id){
@@ -28,7 +32,7 @@ function makeLink(id){
     return link
   }
 
-function appendChildren(link, article) {
+function appendArticleToLink(link, article) {
     const items = document.querySelector("#items")
     items.appendChild(link)
     link.appendChild(article)
