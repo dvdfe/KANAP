@@ -2,6 +2,7 @@ const productSelected = window.location.search;
 const urlParams = new URLSearchParams(productSelected) 
 const id = urlParams.get("id")
 let itemPrice = 0
+let imgUrl, altText
 console.log(id)
 
 fetch(`http://localhost:3000/api/products/${id}`)
@@ -14,6 +15,8 @@ fetch(`http://localhost:3000/api/products/${id}`)
 function product(sofa){
     const {altTxt, colors, description, imageUrl, name, price} = sofa
     itemPrice = price
+    imgUrl = imageUrl
+    altText = altTxt
     makeImage(imageUrl,altTxt)
     makeTitle(name)
     makePrice(price)
@@ -60,12 +63,15 @@ btn.addEventListener('click', () =>{
     const quantity = document.querySelector('#quantity').value
     if (color == "" || quantity == 0){
         alert("Selectionnez une couleur et une quantité")
+        return
     }
     const data ={
         id : id,
         color: color,
         quantity: Number(quantity),
         price: itemPrice,
+        imageUrl: imgUrl,
+        altTxt: altText,
     }
     localStorage.setItem(id, JSON.stringify(data))
     window.location.href = "cart.html"
