@@ -2,7 +2,7 @@ const productSelected = window.location.search;
 const urlParams = new URLSearchParams(productSelected) 
 const id = urlParams.get("id")
 let itemPrice = 0
-let imgUrl, altText
+let imgUrl, altText, nameProduct
 console.log(id)
 
 fetch(`http://localhost:3000/api/products/${id}`)
@@ -17,6 +17,7 @@ function product(sofa){
     itemPrice = price
     imgUrl = imageUrl
     altText = altTxt
+    nameProduct = name
     makeImage(imageUrl,altTxt)
     makeTitle(name)
     makePrice(price)
@@ -67,6 +68,7 @@ btn.addEventListener('click', () =>{
     }
     const data ={
         id : id,
+        name: nameProduct,
         color: color,
         quantity: Number(quantity),
         price: itemPrice,
