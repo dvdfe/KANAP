@@ -23,6 +23,28 @@ function displayItem(item){
     const cardItemContent = makeCartContent(item)
     article.appendChild(cardItemContent)
     displayArticle(article)
+    displayTotalQuantity(item)
+    displayTotalPrice(item)
+}
+
+function displayTotalQuantity(item){
+    let total = 0;
+    const totalQuantity = document.querySelector('#totalQuantity')
+    cart.forEach((item) =>{
+        const totalQuantity = item * item.quantity
+        total = total + totalQuantity
+    }) 
+    totalQuantity.textContent = total
+}
+
+function displayTotalPrice(item){
+    let total = 0;
+    const totalPrice = document.querySelector('#totalPrice')
+    cart.forEach((item) =>{
+        const totalPrice = item.price * item.quantity
+        total = total + totalPrice
+    }) 
+    totalPrice.textContent = total
 }
 
 
@@ -44,8 +66,8 @@ function makeSettings(item){
     settings.classList.add("cart__item__content__settings")
     
     addQuantitySettings(settings, item)
-/*     deleteQuantitySettings(settings)
- */    
+    deleteQuantitySettings(settings, item)
+    
     return settings
 }
 
@@ -63,21 +85,21 @@ function addQuantitySettings(settings, item){
     input.max = '100'
     input.value = item.value
     settings.appendChild(input)
-
+    
     return quantity
     
 }
 
-/* function deleteQuantitySettings(item){
+function deleteQuantitySettings(settings){
     const deleteItem = document.createElement('div')
     deleteItem.classList.add('cart__item__content__settings__delete')
     const p = document.createElement('p')
     p.classList.add('deleteItem')
-    p.textContent('Supprimer')
-
-    return deleteItem
+    p.textContent = 'Supprimer'
+    deleteItem.appendChild(p)
+    settings.appendChild(deleteItem)
 }
- */
+
 
 function makeDescription(item){
     const description = document.createElement('div')
