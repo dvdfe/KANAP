@@ -17,41 +17,85 @@ function articles(){
 
 function displayItem(item){
     const article = makeArticle(item)
-    displayArticle(article)
     const div = makeImageDiv(item)
-    const settings = makeSettings(item)
     article.appendChild(div)
-    console.log(article);
-
+    
     const cardItemContent = makeCartContent(item)
     article.appendChild(cardItemContent)
-    cardItemContent.appendChild(settings)
+    displayArticle(article)
 }
 
+
 function makeCartContent(item){
-    const div = document.createElement('div')
-    div.classList.add('cart__item__content')
+    const cardItemContent = document.createElement('div')
+    cardItemContent.classList.add('cart__item__content')
+    
+    const description = makeDescription(item)
+    const settings = makeSettings(item)
+
+    cardItemContent.appendChild(description)
+    cardItemContent.appendChild(settings)
+    return cardItemContent
+}
 
 
+function makeSettings(item){
+    const settings = document.createElement('div')
+    settings.classList.add("cart__item__content__settings")
+    
+    addQuantitySettings(settings, item)
+/*     deleteQuantitySettings(settings)
+ */    
+    return settings
+}
+
+function addQuantitySettings(settings, item){
+    const quantity = document.createElement('div')
+    quantity.classList.add('cart__item__content__settings__quantity')
+    const p = document.createElement('p')
+    p.textContent = 'Qté :'
+    quantity.appendChild(p)
+    const input = document.createElement('input')
+    input.type = 'number'
+    input.classList.add('itemQuantity')
+    input.name = ('itemQuantity')
+    input.min = '1'
+    input.max = '100'
+    input.value = item.value
+    settings.appendChild(input)
+
+    return quantity
+    
+}
+
+/* function deleteQuantitySettings(item){
+    const deleteItem = document.createElement('div')
+    deleteItem.classList.add('cart__item__content__settings__delete')
+    const p = document.createElement('p')
+    p.classList.add('deleteItem')
+    p.textContent('Supprimer')
+
+    return deleteItem
+}
+ */
+
+function makeDescription(item){
     const description = document.createElement('div')
     description.classList.add("cart__item__content__description")
-
+    
     const h2 = document.createElement('h2')
     h2.textContent = item.name
-
+    
     const p = document.createElement('p')
     p.textContent = item.color
-
+    
     const price = document.createElement('p')
     price.textContent = item.price + "€"
-
-    description.appendChild(h2, p, price)
+    
+    description.appendChild(h2)
     description.appendChild(p)
     description.appendChild(price)
-    div.appendChild(description)
-    
-
-    return div
+    return description
 }
 
 
@@ -76,26 +120,5 @@ function makeImageDiv(item){
     image.alt = item.altTxt
     div.appendChild(image)
     return div
-}
-
-function makeSettings(item){
-    const settings = document.createElement('div')
-    settings.classList.add("cart__item__content__settings")
-    return settings
-}
-
-function addQuantitySettings(){
-    const quantity = document.createElement('div')
-    quantity.classList.add('cart__item__content__settings__quantity')
-    const p = document.createElement('p')
-    p.textContent = 'Qté :'
-    quantity.appendChild(p)
-    const input = document.createElement('input')
-    input.type = 'number'
-    input.classList.add('itemQuantity')
-    input.name = ('itemQuantity')
-    input.min = '1'
-    input.max = '100'
-    input.value = '42'
 }
 
