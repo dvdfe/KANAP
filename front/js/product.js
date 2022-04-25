@@ -66,6 +66,7 @@ btn.addEventListener('click', () =>{
         alert("Selectionnez une couleur et une quantité")
         return
     }
+    const key = `${id}-${color}`
     const data ={
         id : id,
         name: nameProduct,
@@ -75,7 +76,7 @@ btn.addEventListener('click', () =>{
         imageUrl: imgUrl,
         altTxt: altText,
     }
-    localStorage.setItem(id, JSON.stringify(data))
+    localStorage.setItem(key, JSON.stringify(data))
     window.location.href = "cart.html"
 })
 
