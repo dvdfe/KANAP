@@ -103,6 +103,7 @@ function updateQuantity(id, newValue, item){
     displayTotalQuantity()
 
     newLocalStorage(item)
+
 }
 
 
@@ -113,14 +114,39 @@ function newLocalStorage(item){
 }
 
 
-function deleteQuantitySettings(settings){
-    const deleteItem = document.createElement('div')
-    deleteItem.classList.add('cart__item__content__settings__delete')
+function deleteQuantitySettings(settings, item){
+    const div = document.createElement('div')
+    div.classList.add('cart__item__content__settings__delete')
+    div.addEventListener('click', ()=> deleteItem(item))
     const p = document.createElement('p')
     p.classList.add('deleteItem')
     p.textContent = 'Supprimer'
-    deleteItem.appendChild(p)
-    settings.appendChild(deleteItem)
+    div.appendChild(p)
+    settings.appendChild(div)
+}
+
+function deleteItem(item){
+    const itemToDelete = cart.findIndex(
+        (product) => product.id === item.id && product.color === item.color
+    )
+    cart.splice(itemToDelete, 1)
+    deleteItemLocalStorage(item)
+    deleteItemPage(item)
+
+}
+
+function deleteItemPage(item){
+    const itemToDelete = document.querySelector(
+        `article[data-id="${item.id}"][data-color="${item.color}"]`
+    )
+    itemToDelete.remove()
+
+}
+
+function deleteItemLocalStorage(item){
+    const key = `${item.id}-${item.color}`
+    console.log(key)
+    localStorage.removeItem(key)
 }
 
 
