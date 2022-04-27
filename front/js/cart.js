@@ -1,5 +1,6 @@
 const cart = []
-
+const orderButton = document.querySelector("#order")
+orderButton.addEventListener('click', (e) => orderForm(e))
 
 articles()
 cart.forEach((item) => displayItem(item))
@@ -193,3 +194,66 @@ function makeImageDiv(item){
     return div
 }
 
+//---------------------------------------------------------------------------ORDER
+
+function orderForm(e){
+    e.preventDefault()
+    if (cart.length === 0){
+         alert ("Votre panier est vide")
+         return
+    }
+
+    validateForm()
+
+    const body = makeBody()
+    fetch ("https://localhost:3000/api/products/order", {
+        method: "post",
+        body: JSON.stringify(body),
+        headers: {
+            "Content-Type": "application/json"
+        }
+        
+    })
+    .then((res) => res.json())
+    .then((data) => console.log(data))
+    console.log(form.elements.firstName.value);
+}
+
+function validateForm(){
+
+
+}
+
+
+function makeBody(){
+    const form = document.querySelector('.cart__order__form')
+    const firstName = form.elements.firstName.value
+    const lastName = form.elements.lasttName.value
+    const adress = form.elements.adress.value
+    const city = form.elements.city.value
+    const email = form.elements.email.value
+   
+    const body = {
+        contact: {
+            firstName: firstName,
+            lastName: lastName,
+            adress: adress,
+            city: city,
+            email: email,
+        },
+        products: idLocalStorage()
+    }
+    console.log(body)
+    return body
+}
+
+function idLocalStorage(){
+    const products = localStorage.length
+    const ids = []
+    for (let i = 0 ; i < products; i ++){
+        const key = localStorage.key(i)
+        const id = key.split("-")[0]
+        ids.push(id)
+    }
+    return ids
+}
