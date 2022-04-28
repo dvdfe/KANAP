@@ -32,7 +32,7 @@ function displayTotalQuantity(item){
     let total = 0;
     const totalQuantity = document.querySelector('#totalQuantity')
     cart.forEach((item) =>{
-        const totalQuantity = item * item.quantity
+        const totalQuantity = item.quantity
         total = total + totalQuantity
     }) 
     totalQuantity.textContent = total
@@ -133,7 +133,8 @@ function deleteItem(item){
     cart.splice(itemToDelete, 1)
     deleteItemLocalStorage(item)
     deleteItemPage(item)
-
+    displayTotalPrice()
+    displayTotalQuantity()
 }
 
 function deleteItemPage(item){
@@ -206,7 +207,8 @@ function orderForm(e){
     validateForm()
 
     const body = makeBody()
-    fetch ("https://localhost:3000/api/products/order", {
+    console.log(body)
+    fetch ("http://localhost:3000/api/products/order", {
         method: "post",
         body: JSON.stringify(body),
         headers: {
@@ -216,7 +218,6 @@ function orderForm(e){
     })
     .then((res) => res.json())
     .then((data) => console.log(data))
-    console.log(form.elements.firstName.value);
 }
 
 function validateForm(){
@@ -228,8 +229,8 @@ function validateForm(){
 function makeBody(){
     const form = document.querySelector('.cart__order__form')
     const firstName = form.elements.firstName.value
-    const lastName = form.elements.lasttName.value
-    const adress = form.elements.adress.value
+    const lastName = form.elements.lastName.value
+    const address = form.elements.address.value
     const city = form.elements.city.value
     const email = form.elements.email.value
    
@@ -237,7 +238,7 @@ function makeBody(){
         contact: {
             firstName: firstName,
             lastName: lastName,
-            adress: adress,
+            address: address,
             city: city,
             email: email,
         },
