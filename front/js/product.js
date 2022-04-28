@@ -3,13 +3,11 @@ const urlParams = new URLSearchParams(productSelected)
 const id = urlParams.get("id")
 let itemPrice = 0
 let imgUrl, altText, nameProduct
-console.log(id)
 
 fetch(`http://localhost:3000/api/products/${id}`)
 .then((data) => data.json())
 .then((data) => {
     product(data)
-    console.log(data)
 })
 
 function product(sofa){

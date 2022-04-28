@@ -12,7 +12,6 @@ function articles(){
         const itemObject = JSON.parse(item)
         cart.push(itemObject)
     }
-    console.log(cart)
 }
 
 
@@ -96,10 +95,8 @@ function addQuantitySettings(settings, item){
 
 function updateQuantity(id, newValue, item){
     const itemToUpdate = cart.find(item => item.id === id)
-    console.log(itemToUpdate)
     itemToUpdate.quantity = Number(newValue)
     item.quantity = itemToUpdate.quantity
-    console.log(cart);
     displayTotalPrice()
     displayTotalQuantity()
 
@@ -204,10 +201,11 @@ function orderForm(e){
          return
     }
 
-    validateForm()
+    if (validateForm()) return
+    if (validateEmail()) return
+
 
     const body = makeBody()
-    console.log(body)
     fetch ("http://localhost:3000/api/products/order", {
         method: "post",
         body: JSON.stringify(body),
@@ -217,13 +215,37 @@ function orderForm(e){
         
     })
     .then((res) => res.json())
-    .then((data) => console.log(data))
+    .then((data) => {
+        const orderId = data.orderId
+        window.location.href = "/front/html/confirmation.html" + "?orderId=" + orderId
+    })
+    .catch((err) => console.log(err))
 }
 
 function validateForm(){
+    const form = document.querySelector(".cart__order__form")
+    const inputs = form.querySelectorAll("input")
+    inputs.forEach((input) => {
+    if (input.value === ""){
+            alert ("Remplissez tous les champs")
+            return true
+        }
+        return false
+    })
+  
+}
 
+function validateEmail(){
+    const email = document.querySelector("#email").value
+    const regex = /^[A-Za-z0-9+_.-]+@(.+)$/
+    if (regex.test(email) === false){
+        alert ("Adresse email non valide")
+        return true
+    }
+    return false
 
 }
+
 
 
 function makeBody(){
@@ -258,3 +280,5 @@ function idLocalStorage(){
     }
     return ids
 }
+
+
