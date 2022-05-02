@@ -225,13 +225,12 @@ function orderForm(e){
 function validateForm(){
     const form = document.querySelector(".cart__order__form")
     const inputs = form.querySelectorAll("input")
-    inputs.forEach((input) => {
-    if (input.value === ""){
+    for (const input of inputs){
+    if (input.value.trim().length === 0){
             alert ("Remplissez tous les champs")
-            return true
+            return
         }
-        return false
-    })
+    }
   
 }
 
@@ -240,10 +239,8 @@ function validateEmail(){
     const regex = /^[A-Za-z0-9+_.-]+@(.+)$/
     if (regex.test(email) === false){
         alert ("Adresse email non valide")
-        return true
+        return
     }
-    return false
-
 }
 
 
