@@ -228,8 +228,9 @@ function validateForm(){
     for (const input of inputs){
     if (input.value.trim().length === 0){
             alert ("Remplissez tous les champs")
-            return
+            return true
         }
+        return false
     }
   
 }
@@ -239,8 +240,9 @@ function validateEmail(){
     const regex = /^[A-Za-z0-9+_.-]+@(.+)$/
     if (regex.test(email) === false){
         alert ("Adresse email non valide")
-        return
+        return true
     }
+    return false
 }
 
 
