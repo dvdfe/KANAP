@@ -70,8 +70,8 @@ btn.addEventListener('click', () =>{
         name: nameProduct,
         color: color,
         quantity: Number(quantity),
-        price: itemPrice,
-        imageUrl: imgUrl,
+/*         price: itemPrice,
+ */        imageUrl: imgUrl,
         altTxt: altText,
     }
     localStorage.setItem(key, JSON.stringify(data))

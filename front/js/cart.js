@@ -2,8 +2,18 @@ const cart = []
 const orderButton = document.querySelector("#order")
 orderButton.addEventListener('click', (e) => orderForm(e))
 
-articles()
-cart.forEach((item) => displayItem(item))
+fetch("http://localhost:3000/api/products")
+  .then((res) => res.json())
+  .then((data) => {
+      articles()
+      for (const item of cart){
+          const product = data.find(indata => item.id == indata._id)
+          item.price = product.price
+      }
+      cart.forEach((item) => displayItem(item))
+    console.log(cart)}
+  )
+
 
 function articles(){
     const numberOfItems = localStorage.length
@@ -200,9 +210,11 @@ function orderForm(e){
          alert ("Votre panier est vide")
          return
     }
-
     if (validateForm()) return
     if (validateEmail()) return
+    if (validateFirstName()) return
+    if (validateLastName()) return
+
 
 
     const body = makeBody()
@@ -218,7 +230,7 @@ function orderForm(e){
     .then((data) => {
         const orderId = data.orderId
         window.location.href = "/front/html/confirmation.html" + "?orderId=" + orderId
-    })
+    }) 
     .catch((err) => console.log(err))
 }
 
@@ -230,14 +242,14 @@ function validateForm(){
             alert ("Remplissez tous les champs")
             return true
         }
-        return false
     }
+    return false
   
 }
 
 function validateEmail(){
     const email = document.querySelector("#email").value
-    const regex = /^[A-Za-z0-9+_.-]+@(.+)$/
+    const regex = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/
     if (regex.test(email) === false){
         alert ("Adresse email non valide")
         return true
@@ -245,6 +257,25 @@ function validateEmail(){
     return false
 }
 
+function validateFirstName(){
+    const firstName = document.querySelector("#firstName").value
+    const regex = /^[^0-9]+$/gm
+    if (regex.test(firstName) === false){
+        alert ("Prénom invalide")
+        return true
+    }
+    return false
+}
+
+function validateLastName(){
+    const lastName = document.querySelector("#lastName").value
+    const regex = /^[^0-9]+$/gm
+    if (regex.test(lastName) === false){
+        alert ("Nom invalide")
+        return true
+    }
+    return false
+}
 
 
 function makeBody(){
