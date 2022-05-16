@@ -116,7 +116,9 @@ function updateQuantity(id, newValue, item){
 
 
 function newLocalStorage(item){
-    const newData = JSON.stringify(item)
+    const kanapItem = {...item}
+    delete kanapItem.price
+    const newData = JSON.stringify(kanapItem)
     const key = `${item.id}-${item.color}`
     localStorage.setItem(key, newData)
 }
@@ -210,12 +212,14 @@ function orderForm(e){
          alert ("Votre panier est vide")
          return
     }
-    if (validateForm()) return
-    if (validateEmail()) return
-    if (validateFirstName()) return
-    if (validateLastName()) return
+    const form = document.querySelector(".cart__order__form")
+    const inputs = form.querySelectorAll("input")
+    for (const input of inputs){
+    const tag = document.getElementById(input.name + "ErrorMsg")
+    if (tag!== null) tag.innerText= ""
+    }
 
-
+    if (validateForm() + validateEmail() + validateFirstName() + validateLastName() > 0) return
 
     const body = makeBody()
     fetch ("http://localhost:3000/api/products/order", {
@@ -234,13 +238,21 @@ function orderForm(e){
     .catch((err) => console.log(err))
 }
 
+const fields = {
+    firstName: "Prénom",
+    lastName: "Nom",
+    address: "Adresse",
+    city: "Ville",
+    email : "email",
+}
+
 function validateForm(){
     const form = document.querySelector(".cart__order__form")
     const inputs = form.querySelectorAll("input")
     for (const input of inputs){
     if (input.value.trim().length === 0){
-            alert ("Remplissez tous les champs")
-            return true
+               document.getElementById(input.name + "ErrorMsg").innerText= fields[input.name] + " invalide"
+               return true
         }
     }
     return false
@@ -251,7 +263,7 @@ function validateEmail(){
     const email = document.querySelector("#email").value
     const regex = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/
     if (regex.test(email) === false){
-        alert ("Adresse email non valide")
+        document.getElementById("emailErrorMsg").innerText= "email invalide"
         return true
     }
     return false
@@ -261,7 +273,7 @@ function validateFirstName(){
     const firstName = document.querySelector("#firstName").value
     const regex = /^[^0-9]+$/gm
     if (regex.test(firstName) === false){
-        alert ("Prénom invalide")
+        document.getElementById("firstNameErrorMsg").innerText= "Prénom invalide"
         return true
     }
     return false
@@ -271,7 +283,7 @@ function validateLastName(){
     const lastName = document.querySelector("#lastName").value
     const regex = /^[^0-9]+$/gm
     if (regex.test(lastName) === false){
-        alert ("Nom invalide")
+        document.getElementById("lastNameErrorMsg").innerText= "Nom invalide"
         return true
     }
     return false
